@@ -21,7 +21,7 @@ const BOT_PASSWORD = process.env.BOT_PASSWORD;
 // ─────────────────────────────────────────────
 
 async function login() {
-  const res = await fetch(`${API_URL}/auth/login`, {
+  const res = await fetch(`${API_URL}/api/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email: BOT_EMAIL, password: BOT_PASSWORD }),
@@ -240,7 +240,7 @@ SEO 키워드를 본문에 자연스럽게 2~3회 포함해주세요:
     }
 
     console.log(
-      `[${contentType.label}] ✅ "${result.title}" (${result.content.length}자)`
+      `[${contentType.label}] ✅ "${result.title}" (${result.content.length}자)`,
     );
     return { ...result, contentType: contentType.id };
   } catch (error) {
@@ -255,7 +255,7 @@ SEO 키워드를 본문에 자연스럽게 2~3회 포함해주세요:
 
 async function postAsDraft(content, accessToken) {
   try {
-    const res = await fetch(`${API_URL}/posts`, {
+    const res = await fetch(`${API_URL}/api/posts`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -282,7 +282,9 @@ async function postAsDraft(content, accessToken) {
     }
 
     const data = await res.json();
-    console.log(`[게시] ✅ DRAFT 저장: "${content.title}" (ID: ${data.id || "N/A"})`);
+    console.log(
+      `[게시] ✅ DRAFT 저장: "${content.title}" (ID: ${data.id || "N/A"})`,
+    );
     return true;
   } catch (error) {
     console.error(`[게시] ❌ ${error.message}`);
@@ -340,7 +342,7 @@ async function main() {
   // 3. 결과
   console.log("\n=== 결과 ===");
   console.log(
-    `DRAFT 저장: ${results.success} | 건너뜀: ${results.skipped} | 실패: ${results.failed}`
+    `DRAFT 저장: ${results.success} | 건너뜀: ${results.skipped} | 실패: ${results.failed}`,
   );
 
   if (results.success === 0 && results.failed > 0) process.exit(1);
