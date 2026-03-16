@@ -1,0 +1,31 @@
+# 교사쉼터 콘텐츠 자동 생성 (DRAFT → 관리자 승인 방식)
+#
+# 매일 한국시간 오전 7시 실행
+# Claude가 글 3개 생성 → DRAFT로 저장 → 어드민에서 승인
+
+name: Daily Content Generator
+
+on:
+  schedule:
+    - cron: '0 22 * * *'  # UTC 22시 = KST 07시
+  workflow_dispatch:       # 수동 실행 가능
+
+jobs:
+  generate-content:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - run: npm install @anthropic-ai/sdk
+
+      - run: node scripts/generate-content.js
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TEACHER_SHELTER_API_URL: ${{ secrets.TEACHER_SHELTER_API_URL }}
+          BOT_EMAIL: ${{ secrets.BOT_EMAIL }}
+          BOT_PASSWORD: ${{ secrets.BOT_PASSWORD }}
