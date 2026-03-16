@@ -265,7 +265,7 @@ JSON만 반환하세요.`,
 // ─────────────────────────────────────────────
 
 async function postAsDraft(content, accessToken) {
-  const res = await fetch(`${API_URL}/api/posts`, {
+  const res = await fetch(`${API_URL}/api/admin/auto-content`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
