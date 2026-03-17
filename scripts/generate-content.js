@@ -163,10 +163,15 @@ const OUTPUT_RULE = `
 
 출력 규칙:
 - 반드시 JSON 한 개만 반환할 것. JSON 앞뒤에 설명, 인사말, 마크다운 코드블록(\`\`\`) 붙이지 말 것.
+- content 필드의 본문은 반드시 마크다운 형식으로 작성할 것:
+  - 문단 사이에 빈 줄(\\n\\n)을 넣어 구분할 것
+  - 소제목이 있으면 ## 또는 ### 사용
+  - 핵심 내용은 **굵게** 강조
+  - 목록이 필요하면 - 사용
 - 검색 결과가 부족해서 글을 쓸 수 없으면: {"skip":true,"reason":"사유"}
 
 JSON 형식:
-{"title":"25~35자 제목","content":"800~1200자 본문","category":"INFO또는KNOWHOW","sourceUrl":"출처URL또는빈문자열","sourceName":"출처명","confidence":"high또는medium"}
+{"title":"25~35자 제목","content":"800~1200자 본문(마크다운)","category":"INFO또는KNOWHOW","sourceUrl":"출처URL또는빈문자열","sourceName":"출처명","confidence":"high또는medium"}
 
 confidence: high=공식기관 출처, medium=비공식 출처`;
 
