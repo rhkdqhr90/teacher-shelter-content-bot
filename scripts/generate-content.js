@@ -8,9 +8,9 @@
  * - 검색 결과가 부실하면 건너뛰기 강화
  */
 
-const Anthropic = require("@anthropic-ai/sdk");
+const OpenAI = require("openai");
 
-const client = new Anthropic();
+const client = new OpenAI();
 
 const API_URL = process.env.TEACHER_SHELTER_API_URL;
 const BOT_EMAIL = process.env.BOT_EMAIL || "bot@teacherlounge.co.kr";
@@ -318,15 +318,11 @@ async function generateContent(typeKey) {
 
   console.log(`[${contentType.label}] 생성 시작...`);
 
-  const response = await client.messages.create({
-    model: "claude-haiku-4-5-20251001",
-    max_tokens: 2000,
-    tools: [{ type: "web_search_20250305", name: "web_search" }],
-    system: contentType.systemPrompt + OUTPUT_RULE,
-    messages: [
-      {
-        role: "user",
-        content: `오늘은 ${today}입니다.
+  const response = await client.responses.create({
+    model: "gpt-4o-mini",
+    tools: [{ type: "web_search_preview" }],
+    instructions: contentType.systemPrompt + OUTPUT_RULE,
+    input: `오늘은 ${today}입니다.
 
 ${contentType.userMessage}
 
@@ -334,14 +330,10 @@ ${contentType.userMessage}
 본문에 "특수교사", "보육교사", "어린이집 교사" 중 적절한 키워드를 자연스럽게 포함해주세요.
 
 JSON만 반환하세요.`,
-      },
-    ],
   });
 
-  const textBlocks = response.content.filter((b) => b.type === "text");
-  if (textBlocks.length === 0) throw new Error("텍스트 응답 없음");
-
-  const rawText = textBlocks.map((b) => b.text).join("");
+  const rawText = response.output_text;
+  if (!rawText) throw new Error("텍스트 응답 없음");
 
   let jsonStr = "";
   const codeBlock = rawText.match(/```(?:json)?\s*([\s\S]*?)```/);

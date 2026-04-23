@@ -21,11 +21,11 @@ jobs:
         with:
           node-version: '20'
 
-      - run: npm install @anthropic-ai/sdk
+      - run: npm install openai
 
       - run: node scripts/generate-content.js
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           TEACHER_SHELTER_API_URL: ${{ secrets.TEACHER_SHELTER_API_URL }}
           BOT_EMAIL: ${{ secrets.BOT_EMAIL }}
           BOT_PASSWORD: ${{ secrets.BOT_PASSWORD }}

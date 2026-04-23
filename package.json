@@ -1,6 +1,6 @@
 {
   "name": "teacher-shelter-content-bot",
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.39.0"
+    "openai": "^4.0.0"
   }
 }
